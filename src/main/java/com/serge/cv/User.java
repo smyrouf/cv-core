@@ -12,8 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.springframework.core.style.ToStringCreator;
 
 import com.serge.persistence.model.Identificable;
 
@@ -35,9 +34,10 @@ public class User implements Identificable<Integer> {
 	private Integer id;
 
 	
-	//private Set<Resume> resumes = new HashSet<Resume>();
+	@OneToMany
+	private Set<Resume> resumes = new HashSet<Resume>();
 	
-	public User () { }
+	protected User () { }
 	
 
 	public User(final String login, final String password) {
@@ -47,7 +47,7 @@ public class User implements Identificable<Integer> {
 	
 	
 	public String getLogin() {
-		return login;
+		return this.login;
 	}
 	
 	public void setLogin(String login) {
@@ -55,31 +55,33 @@ public class User implements Identificable<Integer> {
 	}
 	
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 	
 	public void setPassword(String password) {
 		this.password = password;
 	}
 	
-//	public Set<Resume> getResumes() {
-//		return resumes;
-//	}
-//	
-//	public void setResumes(Set<Resume> resumes) {
-//		this.resumes = resumes;
-//	}
-//	
-//	public void addResume(Resume resume) {
-//		this.resumes.add(resume);
-//		resume.setUser(this);
-//	}
-//	
-//	public void removeResume(Resume resume) {
-//		this.resumes.remove(resume);
-//		resume.setUser(null);
-//	}
-//	
+	public Set<Resume> getResumes() {
+		return this.resumes;
+	}
+	
+	public void setResumes(Set<Resume> resumes) {
+		this.resumes = resumes;
+	}
+	
+	public void addResume(Resume resume) {
+		this.resumes.add(resume);
+		if (resume.getUser() != this ) {
+			resume.setUser(this);
+		}
+	}
+	
+	public void removeResume(Resume resume) {
+		this.resumes.remove(resume);
+		resume.setUser(null);
+	}
+	
 	
 	public Integer getId() {
 		return id;
@@ -91,8 +93,7 @@ public class User implements Identificable<Integer> {
 	}
 	
 	public String toString() {
-		return new ToStringBuilder(this).append(this.login).append(this.password).toString();
-		
+		return new ToStringCreator(this).append(this.login).append(this.password).toString();
 	}
 
 }

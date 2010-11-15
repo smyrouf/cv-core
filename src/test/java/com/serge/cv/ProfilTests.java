@@ -18,6 +18,8 @@ package com.serge.cv;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 import org.junit.Test;
@@ -33,32 +35,34 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.serge.cv.dao.ProfilDao;
+import com.serge.cv.dao.ResumeDao;
 import com.serge.cv.dao.UserDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="/test-context.xml")
 @TransactionConfiguration
 @Transactional
-public class UserTests {
+public class ProfilTests {
 
 	@Autowired
-	private UserDao userDao;
+	private ProfilDao profilDao;
 
 	@Test
-	public void testSaveUser() throws Exception {
-		User user = new User("login","passoword");
-		this.userDao.persist(user);
-		assertNotNull(user.getId());
+	public void testSaveProfil() throws Exception {
+		Profil profil = new Profil("name","surname","adress","codePostal",10,"514-582-1234","514-234-1983");
+		this.profilDao.persist(profil);
+		assertNotNull(profil.getId());
 	}
 	
 	@Test
 	public void testFind() throws Exception {
-		User userExpected = this.userDao.persist(new User("login","password"));
-		this.userDao.persist(new User("login2","password"));
-		this.userDao.persist(new User("login3","password"));
-		this.userDao.persist(new User("login4","password"));
-		User user = this.userDao.findbyLogin("login");
-		assertEquals(userExpected.getLogin(), user.getLogin());
+		Profil profilExpected = this.profilDao.persist(new Profil("name","surname","adress","codePostal",10,"514-582-1234","514-234-1983"));
+		this.profilDao.persist(new Profil("name2","surname","adress","codePostal",10,"514-582-1234","514-234-1983"));
+		this.profilDao.persist(new Profil("name3","surname","adress","codePostal",10,"514-582-1234","514-234-1983"));
+		this.profilDao.persist(new Profil("name4","surname","adress","codePostal",10,"514-582-1234","514-234-1983"));
+		List<Profil> profils = this.profilDao.findbyName("name");
+		assertEquals(profils.get(0), profilExpected);
 	}
 
 //	@Test

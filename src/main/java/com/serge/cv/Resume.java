@@ -1,69 +1,69 @@
 package com.serge.cv;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-
 import com.serge.persistence.model.Identificable;
 
 
+@Entity
 public class Resume implements Identificable<Integer> {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	
-//	@ManyToOne
-//	@JoinColumn(name="profil_fk")
+	@ManyToOne
 	private Profil 	profil;
 	
+	@ManyToMany
+	private Set<Cursus> cursus;
 	
-	private Experience experienceProfessionnelle;
+	@ManyToOne
+	private Cursus formation;
 	
-	private Formation formation;
+	@ManyToOne
+	private Cursus projet;
 	
-	private Projet projet;
+	@ManyToOne
+	private SkillReference skillReference;
 	
-	private Competence competence;
-	
+	@ManyToOne
 	private User user;
 	
-	public Resume() { }
+	protected Resume() { }
 
-	public Resume(final Profil profil, 
-				  final Formation formation, 
-				  final Experience experienceProfessionnelle,  
-				  final Projet projet,
-				  final Competence competence) {
-		this.profil = profil;
-	//	this.profil.addResume(this);
-		this.formation = formation;
-	//	this.formation.addResume(this);
-		this.competence = competence;
-	//	this.competence.addResume(this);
-		this.experienceProfessionnelle = experienceProfessionnelle;
-	//	this.experienceProfessionnelle.addResume(this);
-		this.projet = projet;
-	//	this.projet.addResume(this);
-		
+	public Resume(final Profil profil,
+				  final SkillReference skillReference) {
+		this.setProfil(profil);
+		this.setSkillReference(skillReference);
+	}
+
+	Resume(ResumeBuilder resumeBuilder) {
+		this.setProfil(resumeBuilder.profil);
+		this.setCursus(resumeBuilder.cursus);
+		this.setSkillReference(resumeBuilder.skillReference);
 	}
 
 	public Integer getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
 	/**
 	 * @return the user
 	 */
 	public User getUser() {
-		return user;
+		return this.user;
 	}
 
 
@@ -72,67 +72,100 @@ public class Resume implements Identificable<Integer> {
 	 */
 	public void setUser(User user) {
 		this.user = user;
+		user.addResume(this);
 	}
 
 	
 
 	public Profil getProfil() {
-		return profil;
+		return this.profil;
 	}
+	
 	public void setProfil(Profil profil) {
-	//	profil.addResume(this);
 		this.profil = profil;
+		profil.setResume(this);
 	}
-	/**
-	 * @return the experienceProfessionnelle
-	 */
-	public Experience getExperienceProfessionnelle() {
-		return experienceProfessionnelle;
+	
+	public Cursus getProjet() {
+		return this.projet;
 	}
-	/**
-	 * @param experienceProfessionnelle the experienceProfessionnelle to set
-	 */
-	public void setExperienceProfessionnelle(Experience experienceProfessionnelle) {
-		this.experienceProfessionnelle = experienceProfessionnelle;
-	}
-	/**
-	 * @return the formation
-	 */
-	public Formation getFormation() {
-		return formation;
-	}
-	/**
-	 * @param formation the formation to set
-	 */
-	public void setFormation(Formation formation) {
-		this.formation = formation;
-	}
-	/**
-	 * @return the projet
-	 */
-	public Projet getProjet() {
-		return projet;
-	}
-	/**
-	 * @param projet the projet to set
-	 */
-	public void setProjet(Projet projet) {
+
+	public void setProjet(Cursus projet) {
 		this.projet = projet;
 	}
-	/**
-	 * @return the competence
-	 */
-	public Competence getCompetence() {
-		return competence;
+
+	public SkillReference getSkillReference() {
+		return this.skillReference;
 	}
-	/**
-	 * @param competence the competence to set
-	 */
-	public void setCompetence(Competence competence) {
-		this.competence = competence;
+
+	public void setSkillReference(SkillReference skillReference) {
+		this.skillReference = skillReference;
 	}
 
 	
+	
+
+	public Cursus getFormation() {
+		return this.formation;
+	}
+
+	public void setFormation(Cursus formation) {
+		this.formation = formation;
+		this.formation.addResume(this);
+	}
+	
+	public void setCursus(Set<Cursus> cursus) {
+		this.cursus = cursus;
+	}
+
+	public Set<Cursus> getCursus() {
+		return this.cursus;
+	}
+	
+	public Resume addCursus(Cursus cursusSimple) {
+		this.cursus.add(cursusSimple);
+		if (!cursusSimple.getResumes().contains(this) ) {
+			cursusSimple.addResume(this);
+		}
+		return this;
+	}
+
+	public Resume delCursus(Cursus cursusSimple) {
+		this.cursus.remove(cursusSimple);
+		if (cursusSimple.getResumes().contains(this) ) {
+			cursusSimple.delResume(this);
+		}
+		return this;
+	}
+
+	public static final class ResumeBuilder {
+		
+		Profil 	profil;
+		
+		Set<Cursus> cursus = new HashSet<Cursus>();
+		
+		SkillReference skillReference;
+		
+		public ResumeBuilder setProfil(Profil profil) {
+			this.profil = profil;
+			return this;
+		}
+
+		public ResumeBuilder addCursus(Cursus cursusSimple) {
+			this.cursus.add(cursusSimple);
+			return this;
+		}
+
+		public ResumeBuilder setSkillReference(SkillReference skillReference) {
+			this.skillReference = skillReference;
+			return this;
+		}
+
+		public Resume build() {
+			return new Resume(this);
+		}
+		
+	}
 	
 	
 }

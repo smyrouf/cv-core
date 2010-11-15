@@ -4,13 +4,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.samples.spring</groupId>
-	<artifactId>spring-hibernate-utility</artifactId>
+	<artifactId>cv-core</artifactId>
 	<version>1.0.0.CI-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Spring Hibernate Utility</name>
+	<name>cv-core</name>
 	<url>http://www.springframework.org</url>
 	<description>
-		<![CDATA[This project is a minimal jar utility with Spring configuration for Hibernate.]]>
+		<![CDATA[core ]]>
 	</description>
 	<properties>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>

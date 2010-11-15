@@ -1,36 +1,59 @@
 package com.serge.cv;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-public class Item {
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.apache.commons.lang.Validate;
+
+import com.serge.persistence.model.Identificable;
+
+@Entity
+public class Item  implements Identificable<Integer>{
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Integer id;
+
+	@Basic
+	@Column(nullable=false)
 	private Date dateDebut;
+	
+	@Basic
+	@Column(nullable=false)
 	private Date dateFin;
+	
+	@Basic
 	private String description;
-	private Long id;
+	
+	@ManyToMany
+	private Set<Skill> skills = new HashSet<Skill>();
+	
+	@ManyToOne
 	private Cursus cursus;
 	
-	/**
-	 * @return the cursus
-	 */
-	public Cursus getCursus() {
-		return cursus;
-	}
-
-	/**
-	 * @param cursus the cursus to set
-	 */
-	public void setCursus(Cursus cursus) {
-		this.cursus = cursus;
-	}
-
-	public Long getId() {
-		return id;
-	}
+	public Item() { }
 	
-	public void setId(Long id) {
+	
+	public Integer getId() {
+		return this.id;
+	}
+
+
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	
 
 	
@@ -40,11 +63,11 @@ public class Item {
 		this.description = description;
 	}
 	public Date getDateFin() {
-		return dateFin;
+		return this.dateFin;
 	}
 	
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 	
 	
@@ -52,7 +75,7 @@ public class Item {
 	 * @return the dateDebut
 	 */
 	public Date getDateDebut() {
-		return dateDebut;
+		return this.dateDebut;
 	}
 
 	/**
@@ -70,6 +93,47 @@ public class Item {
 	}
 
 	public void setDescription(String description) {
-		description = description;
+		this.description = description;
 	}
+	
+
+	public Set<Skill> getSkill() {
+		return this.getSkills();
+	}
+
+
+	public void setSkills(Set<Skill> skills) {
+		this.skills = skills;
+	}
+
+
+	
+
+	public Item addSkill(Skill skill) {
+		Validate.notNull(skill,"skill cannot be null");
+		this.skills.add(skill);
+		return this;
+	}
+	
+	public Item delSkill(Skill skill) {
+		Validate.notNull(skill,"skill cannot be null");
+		this.skills.remove(skill);
+		return this;
+	}
+
+
+	public Set<Skill> getSkills() {
+		return this.skills;
+	}
+
+
+	public void setCursus(Cursus cursus) {
+		this.cursus = cursus;
+	}
+
+
+	public Cursus getCursus() {
+		return cursus;
+	}
+	
 }

@@ -33,33 +33,34 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.serge.cv.dao.ResumeDao;
 import com.serge.cv.dao.UserDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="/test-context.xml")
 @TransactionConfiguration
 @Transactional
-public class UserTests {
+public class ResumeTests {
 
 	@Autowired
-	private UserDao userDao;
+	private ResumeDao resumeDao;
 
-	@Test
-	public void testSaveUser() throws Exception {
-		User user = new User("login","passoword");
-		this.userDao.persist(user);
-		assertNotNull(user.getId());
-	}
-	
-	@Test
-	public void testFind() throws Exception {
-		User userExpected = this.userDao.persist(new User("login","password"));
-		this.userDao.persist(new User("login2","password"));
-		this.userDao.persist(new User("login3","password"));
-		this.userDao.persist(new User("login4","password"));
-		User user = this.userDao.findbyLogin("login");
-		assertEquals(userExpected.getLogin(), user.getLogin());
-	}
+//	@Test
+//	public void testSaveResume() throws Exception {
+//		Resume resume = new Resume(;
+//		this.userDao.persist(user);
+//		assertNotNull(user.getId());
+//	}
+//	
+//	@Test
+//	public void testFind() throws Exception {
+//		User userExpected = this.userDao.persist(new User("login","password"));
+//		this.userDao.persist(new User("login2","password"));
+//		this.userDao.persist(new User("login3","password"));
+//		this.userDao.persist(new User("login4","password"));
+//		User user = this.userDao.findbyLogin("login");
+//		assertEquals(userExpected.getLogin(), user.getLogin());
+//	}
 
 //	@Test
 //	@Transactional
