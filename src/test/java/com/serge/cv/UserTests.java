@@ -15,7 +15,7 @@
  */
 package com.serge.cv;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 
 import org.hibernate.SessionFactory;
@@ -23,25 +23,42 @@ import org.hibernate.classic.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration
+import com.serge.cv.dao.UserDao;
+
 @RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="/test-context.xml")
+@TransactionConfiguration
+@Transactional
 public class UserTests {
 
 	@Autowired
-	private SessionFactory sessionFactory;
+	private UserDao userDao;
 
 	@Test
-	@Transactional
 	public void testSaveUser() throws Exception {
-		Session session = sessionFactory.getCurrentSession();
 		User user = new User("login","passoword");
-		session.save(user);
-		session.flush();
+		userDao.persist(user);
 		assertNotNull(user.getId());
+	}
+	
+	@Test
+	public void testFind() throws Exception {
+		User userExpected = userDao.persist(new User("login","password"));
+		userDao.persist(new User("login2","password"));
+		userDao.persist(new User("login3","password"));
+		userDao.persist(new User("login4","password"));
+		User user = userDao.findbyLogin("login");
+		assertEquals(userExpected.getLogin(), user.getLogin());
 	}
 
 //	@Test

@@ -9,18 +9,19 @@ import org.springframework.stereotype.Repository;
 
 import com.serge.cv.Resume;
 
-@Repository("ResumeHibernateDao")
+//@Repository("ResumeHibernateDao")
 public class ResumeHibernateDao implements ResumeDao {
 
 
-	@Autowired
+	//@Autowired
 	EntityManager entityManager;
 	
-	@SuppressWarnings("unchecked")
+	//@SuppressWarnings("unchecked")
 	public List<Resume> findbyName(String name) {
-		this.entityManager.("from "+Resume.class.getName()+" as resume where resume.name = ?", new Object[]{name});
-		List<Resume> result = ( List<Resume>)this.getHibernateTemplate().find();
-		return result;
+		//this.entityManager.("from "+Resume.class.getName()+" as resume where resume.name = ?", new Object[]{name});
+		//List<Resume> result = ( List<Resume>)this.getHibernateTemplate().find();
+		//return result;
+		return null;
 	}
 
 	public Object persist(Resume entity) {

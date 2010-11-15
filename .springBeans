@@ -8,7 +8,6 @@
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
 		<config>src/main/resources/META-INF/spring/app-context.xml</config>
-		<config>src/test/resources/com/serge/cv/UserTests-context.xml</config>
 	</configs>
 	<configSets>
 	</configSets>

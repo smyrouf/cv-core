@@ -1,14 +1,12 @@
 package com.serge.cv.dao;
 
 
-import serge.core.dao.StandardDao;
-import serge.resume.model.User;
+import com.serge.cv.User;
+import com.serge.persistence.model.DaoStandard;
 
-public interface UserDao extends StandardDao<User> {
+
+public interface UserDao extends  DaoStandard<User> {
 	
 	public User findbyLogin(String name);
-
-	public void persist(User entity);
-	
 
 }

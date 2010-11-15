@@ -3,21 +3,43 @@ package com.serge.cv;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.serge.persistence.model.Identity;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class User extends Identity<Long> {
+import com.serge.persistence.model.Identificable;
+
+@Entity
+public class User implements Identificable<Integer> {
 	
+	@Basic
+	@Access(AccessType.PROPERTY)
+	@Column(unique = true, nullable = false, length=50)
 	private String login;
+	
+	@Basic
+	@Access(AccessType.PROPERTY)
+	@Column(unique = false, nullable = false, length=50)
 	private String password;
 	
-	@OneToMany(mappedBy="user")
-	private Set<Resume> resumes = new HashSet<Resume>();
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Integer id;
+
+	
+	//private Set<Resume> resumes = new HashSet<Resume>();
 	
 	public User () { }
 	
-	
+
 	public User(final String login, final String password) {
 		this.login = login;
 		this.password = password;
@@ -40,23 +62,37 @@ public class User extends Identity<Long> {
 		this.password = password;
 	}
 	
-	public Set<Resume> getResumes() {
-		return resumes;
+//	public Set<Resume> getResumes() {
+//		return resumes;
+//	}
+//	
+//	public void setResumes(Set<Resume> resumes) {
+//		this.resumes = resumes;
+//	}
+//	
+//	public void addResume(Resume resume) {
+//		this.resumes.add(resume);
+//		resume.setUser(this);
+//	}
+//	
+//	public void removeResume(Resume resume) {
+//		this.resumes.remove(resume);
+//		resume.setUser(null);
+//	}
+//	
+	
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
-	public void setResumes(Set<Resume> resumes) {
-		this.resumes = resumes;
+	public String toString() {
+		return new ToStringBuilder(this).append(this.login).append(this.password).toString();
+		
 	}
-	
-	public void addResume(Resume resume) {
-		this.resumes.add(resume);
-		resume.setUser(this);
-	}
-	
-	public void removeResume(Resume resume) {
-		this.resumes.remove(resume);
-		resume.setUser(null);
-	}
-	
-	
+
 }

@@ -1,17 +1,31 @@
 package com.serge.cv;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
 
+
+@Entity
 public class Profil extends AbstractCategorie {
 
-	
+	@Basic
 	private String nom;
+	
+	@Basic
 	private String prenom;
+	
+	@Basic
 	private String adresse;
+	
+	@Basic
 	private String codePostal;
+	
+	@Basic
 	private int age;
+	
+	@Basic
 	private String telFix;
+	
+	@Basic
 	private String telPortable;
 
 

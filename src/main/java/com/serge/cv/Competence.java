@@ -1,10 +1,11 @@
 package com.serge.cv;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Entity;
+
+//@Entity
 public class Competence  extends AbstractCategorie {
 	private Set<ItemCompetence> itemCompetences = new HashSet<ItemCompetence>();
 	

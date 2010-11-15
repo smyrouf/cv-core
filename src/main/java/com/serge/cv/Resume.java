@@ -1,41 +1,38 @@
 package com.serge.cv;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.serge.persistence.model.Identity;
+import com.serge.persistence.model.Identificable;
 
-@Entity
-public class Resume extends Identity<Long> {
+
+public class Resume implements Identificable<Integer> {
 	
-	@ManyToOne
-	@JoinColumn(name="profil_fk")
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Integer id;
+	
+	
+//	@ManyToOne
+//	@JoinColumn(name="profil_fk")
 	private Profil 	profil;
 	
-	@ManyToOne
-	@JoinColumn(name="experience_professionelle_fk")
+	
 	private Experience experienceProfessionnelle;
 	
-	@ManyToOne
-	@JoinColumn(name="formation_fk")
 	private Formation formation;
 	
-	@ManyToOne
-	@JoinColumn(name="projet_fk")
 	private Projet projet;
 	
-	@ManyToOne
-	@JoinColumn(name="competence_fk")
 	private Competence competence;
 	
-	@ManyToOne
-	@JoinColumn(name="user_fk")
 	private User user;
 	
-	public Resume() {
-		super();
-	}
+	public Resume() { }
 
 	public Resume(final Profil profil, 
 				  final Formation formation, 
@@ -43,19 +40,25 @@ public class Resume extends Identity<Long> {
 				  final Projet projet,
 				  final Competence competence) {
 		this.profil = profil;
-		this.profil.addResume(this);
+	//	this.profil.addResume(this);
 		this.formation = formation;
-		this.formation.addResume(this);
+	//	this.formation.addResume(this);
 		this.competence = competence;
-		this.competence.addResume(this);
+	//	this.competence.addResume(this);
 		this.experienceProfessionnelle = experienceProfessionnelle;
-		this.experienceProfessionnelle.addResume(this);
+	//	this.experienceProfessionnelle.addResume(this);
 		this.projet = projet;
-		this.projet.addResume(this);
+	//	this.projet.addResume(this);
 		
 	}
-	
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	/**
 	 * @return the user
 	 */
@@ -77,7 +80,7 @@ public class Resume extends Identity<Long> {
 		return profil;
 	}
 	public void setProfil(Profil profil) {
-		profil.addResume(this);
+	//	profil.addResume(this);
 		this.profil = profil;
 	}
 	/**
@@ -128,6 +131,8 @@ public class Resume extends Identity<Long> {
 	public void setCompetence(Competence competence) {
 		this.competence = competence;
 	}
+
+	
 	
 	
 }
