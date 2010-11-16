@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.util.EqualsHelper;
 import org.springframework.core.style.ToStringCreator;
 
@@ -169,6 +170,13 @@ public class Profil implements Identificable<Integer> {
 		.append(this.officePhoneNumber)
 		.append(this.officePhoneNumber)
 		.append(this.mobilePhoneNumber).toString();
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(this.name)
+		.append(this.surname)
+		.append(this.age).hashCode();
 	}
 
 	@Override
