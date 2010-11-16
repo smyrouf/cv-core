@@ -46,17 +46,17 @@ public class Skill  implements Identificable<Integer>{
 	@ManyToMany
 	private Set<Resume> resumes = new HashSet<Resume>();
 	
-	
+	protected Skill() { }
 
 	public Set<Resume> getResumes() {
 		return this.resumes;
 	}
 
-	public void setResumes(Set<Resume> Resumes) {
+	public void setResumes(Set<Resume> resumes) {
 		this.resumes = resumes;
 	}
 
-	protected Skill() { }
+	
 	
 	public Skill(final DescriptionType desc, final String description) {
 		this.descriptionType = desc;
@@ -64,7 +64,7 @@ public class Skill  implements Identificable<Integer>{
 	}
 		
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public void setTitle(String title) {
@@ -72,7 +72,7 @@ public class Skill  implements Identificable<Integer>{
 	}
 
 	public String getLevel() {
-		return level;
+		return this.level;
 	}
 
 	public void setLevel(String level) {
