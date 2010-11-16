@@ -25,10 +25,11 @@ public class ResumeHibernateDao extends DaoStandardHibernate<Resume> implements 
 	@Transactional(readOnly=true)
 	public Set<Resume> findbyName(String login) {
 		Assert.hasLength(login,"name cannot be empty");
-		Set<Resume> result = new HashSet<Resume>();
-		//result.addAll(this.getHibernateTemplate().find("select user.resume from "+User.class.getClass()+" as user where user.login = ? ", new Object[]{login}));
-		List<?> results = this.getHibernateTemplate().find("select user from "+User.class.getName()+" as user where user.login = ?", new Object[]{login});
-		return result;
+		Set<Resume> results = new HashSet<Resume>();
+		List<Resume> result =  this.getHibernateTemplate().find("select resume from "+getEntityClass().getName()+" as resume inner join resume.profil as profil where profil.name = ? ", new Object[]{login});
+		//List<?> results = this.getHibernateTemplate().find("select user from "+User.class.getName()+" as user where user.login = ?", new Object[]{login});
+		results.addAll(result);
+		return results;
 	}
 
 	

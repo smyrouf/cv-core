@@ -25,6 +25,7 @@ public class Resume implements Identificable<Integer> {
 	private Integer id;
 	
 	@ManyToOne
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Profil 	profil;
 	
 	@ManyToMany
@@ -32,12 +33,15 @@ public class Resume implements Identificable<Integer> {
 	private Set<Cursus> cursus;
 	
 	@ManyToOne
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Cursus formation;
 	
 	@ManyToOne
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Cursus projet;
 	
 	@ManyToMany
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Set<Skill> skills = new HashSet<Skill>();
 	
 	@ManyToOne
