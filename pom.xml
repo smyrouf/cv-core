@@ -3,12 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.springframework.samples.spring</groupId>
+	<groupId>cv</groupId>
 	<artifactId>cv-core</artifactId>
 	<version>1.0.0.CI-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>cv-core</name>
-	<url>http://www.springframework.org</url>
 	<description>
 		<![CDATA[core ]]>
 	</description>
