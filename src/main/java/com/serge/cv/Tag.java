@@ -37,6 +37,16 @@ public class Tag implements Identificable<Integer>{
 
 	protected Tag() { }
 	
+	public Tag(final String value) {
+		this.setValue(value);
+	}
+	
+	
+	public Tag(final String value, final Double score) {
+		this.setValue(value);
+		this.setScore(score);
+	}
+	
 	public Integer getId() {
 		return this.id;
 	}
