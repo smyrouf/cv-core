@@ -15,15 +15,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.springframework.core.style.ToStringCreator;
 
 import com.serge.persistence.model.Identificable;
 
 @Entity
-public class Skill  implements Identificable<Integer>{
+public class Skill extends TaggedEntity {
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
 	
 	@Enumerated(EnumType.STRING)
 	private DescriptionType descriptionType;
@@ -79,15 +79,7 @@ public class Skill  implements Identificable<Integer>{
 		this.level = level;
 	}
 	
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	
-	public Integer getId() {
-		return this.id;
-	}
-	
-		
 	/**
 	 * @return the descriptionType
 	 */
@@ -155,6 +147,30 @@ public class Skill  implements Identificable<Integer>{
 		}
 	}
 
+	public String toString() {
+		return new ToStringCreator(this)
+			.append(this.descriptionType)
+			.append(this.title)
+			.append(this.level).toString();
+	}
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(this.descriptionType)
+		.append(this.title)
+		.append(this.level).hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) { return false; }
+		if (obj == this) { return true; }
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		Skill other = (Skill)obj;
+		return new EqualsBuilder().append(this.descriptionType, other.descriptionType)
+		.append(this.title, other.title).isEquals();
+	}
 
 	
 }

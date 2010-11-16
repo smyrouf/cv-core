@@ -12,12 +12,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.springframework.core.style.ToStringCreator;
 
 import com.serge.persistence.model.Identificable;
 
 @Entity
-public class User implements Identificable<Integer> {
+public class User extends TaggedEntity {
 	
 	@Basic
 	@Access(AccessType.PROPERTY)
@@ -29,10 +32,6 @@ public class User implements Identificable<Integer> {
 	@Column(unique = false, nullable = false, length=50)
 	private String password;
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
-
 	
 	@OneToMany
 	private Set<Resume> resumes = new HashSet<Resume>();
@@ -83,17 +82,25 @@ public class User implements Identificable<Integer> {
 	}
 	
 	
-	public Integer getId() {
-		return id;
-	}
-
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
 	public String toString() {
 		return new ToStringCreator(this).append(this.login).append(this.password).toString();
 	}
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(this.login)
+		.hashCode();
+	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) { return false; }
+		if (obj == this) { return true; }
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		User other = (User)obj;
+		return new EqualsBuilder().append(this.login, other.login).isEquals();
+	}
+
+	
 }

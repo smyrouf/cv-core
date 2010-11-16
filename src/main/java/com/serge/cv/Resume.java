@@ -11,18 +11,17 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cascade;
+import org.springframework.core.style.ToStringCreator;
 
 
 import com.serge.persistence.model.Identificable;
 
 
 @Entity
-public class Resume implements Identificable<Integer> {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+public class Resume extends TaggedEntity  {
 	
 	@ManyToOne
 	@Cascade(org.hibernate.annotations.CascadeType.ALL)
@@ -32,13 +31,6 @@ public class Resume implements Identificable<Integer> {
 	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Set<Cursus> cursus;
 	
-	@ManyToOne
-	@Cascade(org.hibernate.annotations.CascadeType.ALL)
-	private Cursus formation;
-	
-	@ManyToOne
-	@Cascade(org.hibernate.annotations.CascadeType.ALL)
-	private Cursus projet;
 	
 	@ManyToMany
 	@Cascade(org.hibernate.annotations.CascadeType.ALL)
@@ -59,14 +51,6 @@ public class Resume implements Identificable<Integer> {
 		this.setProfil(resumeBuilder.profil);
 		this.setCursus(resumeBuilder.cursus);
 		this.setSkills(skills);
-	}
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 	
 	/**
@@ -96,13 +80,7 @@ public class Resume implements Identificable<Integer> {
 		profil.setResume(this);
 	}
 	
-	public Cursus getProjet() {
-		return this.projet;
-	}
-
-	public void setProjet(Cursus projet) {
-		this.projet = projet;
-	}
+	
 
 	public Set<Skill> getSkills() {
 		return this.skills;
@@ -130,14 +108,7 @@ public class Resume implements Identificable<Integer> {
 	}
 
 
-	public Cursus getFormation() {
-		return this.formation;
-	}
-
-	public void setFormation(Cursus formation) {
-		this.formation = formation;
-		this.formation.addResume(this);
-	}
+	
 	
 	public void setCursus(Set<Cursus> cursus) {
 		this.cursus = cursus;
@@ -163,6 +134,24 @@ public class Resume implements Identificable<Integer> {
 		return this;
 	}
 
+	
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(this.getId()).hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) { return false; }
+		if (obj == this) { return true; }
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		Resume other = (Resume)obj;
+		return new EqualsBuilder().append(this.getId(),other.getId()).isEquals();
+	}
+	
 	public static final class ResumeBuilder {
 		
 		Profil 	profil;

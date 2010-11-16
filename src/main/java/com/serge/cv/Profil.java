@@ -18,11 +18,8 @@ import com.serge.persistence.model.Identificable;
 
 
 @Entity
-public class Profil implements Identificable<Integer> {
+public class Profil extends TaggedEntity {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
 	
 	@OneToOne
 	private Resume resume;
@@ -72,15 +69,6 @@ public class Profil implements Identificable<Integer> {
 		this.mobilePhoneNumber = mobilePhoneNumber;
 	}
 	
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	
 	public String getName() {
 		return this.name;
@@ -191,10 +179,5 @@ public class Profil implements Identificable<Integer> {
 		.append(this.surname, other.surname)
 		.append(this.age, other.age).isEquals();
 	}
-
-	
-	
-
-	
 
 }

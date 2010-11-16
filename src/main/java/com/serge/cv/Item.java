@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,26 +17,35 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.springframework.core.style.ToStringCreator;
 
 import com.serge.persistence.model.Identificable;
 
 @Entity
-public class Item  implements Identificable<Integer>{
+public class Item  extends TaggedEntity {
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
 
 	@Basic
 	@Column(nullable=false)
+	@Access(AccessType.PROPERTY)
 	private Date dateDebut;
 	
 	@Basic
 	@Column(nullable=false)
+	@Access(AccessType.PROPERTY)
 	private Date dateFin;
 	
 	@Basic
+	@Access(AccessType.PROPERTY)
 	private String description;
+	
+	@Basic
+	@Column(nullable=false)
+	@Access(AccessType.PROPERTY)
+	private String title;
+	
 	
 	@ManyToMany
 	private Set<Skill> skills = new HashSet<Skill>();
@@ -43,17 +54,6 @@ public class Item  implements Identificable<Integer>{
 	private Cursus cursus;
 	
 	public Item() { }
-	
-	
-	public Integer getId() {
-		return this.id;
-	}
-
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	
 
 	
@@ -97,6 +97,15 @@ public class Item  implements Identificable<Integer>{
 	}
 	
 
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+
+	public String getTitle() {
+		return title;
+	}
+
 	public Set<Skill> getSkill() {
 		return this.getSkills();
 	}
@@ -133,7 +142,34 @@ public class Item  implements Identificable<Integer>{
 
 
 	public Cursus getCursus() {
-		return cursus;
+		return this.cursus;
 	}
+	
+	
+	@Override
+	public String toString() {
+		return new ToStringCreator(this).append(this.dateDebut).append(this.dateFin).append(this.title).append(this.description).toString();
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(this.dateDebut).append(this.dateFin).append(this.title).append(this.description)
+		.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) { return false; }
+		if (obj == this) { return true; }
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		Item other = (Item)obj;
+		return new EqualsBuilder().append(this.dateDebut, other.dateDebut)
+			.append(this.dateFin, other.dateFin)
+			.append(this.title, other.title).append(this.description, other.description).isEquals();
+	}
+
+
 	
 }
