@@ -44,16 +44,16 @@ public class Skill  implements Identificable<Integer>{
 	private Set<Item> items = new HashSet<Item>();
 	
 	@ManyToMany
-	private Set<Resume> resume = new HashSet<Resume>();
+	private Set<Resume> resumes = new HashSet<Resume>();
 	
 	
 
-	public Set<Resume> getSkillReferences() {
-		return resume;
+	public Set<Resume> getResumes() {
+		return this.resumes;
 	}
 
-	public void setResume(Set<Resume> Resume) {
-		this.resume = resume;
+	public void setResumes(Set<Resume> Resumes) {
+		this.resumes = resumes;
 	}
 
 	protected Skill() { }
@@ -139,21 +139,22 @@ public class Skill  implements Identificable<Integer>{
 
 	
 	
-	public void addSkillReference(SkillReference skillReference) {
-		Validate.notNull(skillReference, "item cannot be null !!");
-		this.skillReferences.add(skillReference);
-		if (! skillReference.getSkills().contains(this) ) {
-			skillReference.addSkill(this);
+	public void addResume(Resume resume) {
+		Validate.notNull(resume, "resume cannot be null !!");
+		this.resumes.add(resume);
+		if (! resume.getSkills().contains(this) ) {
+			resume.addSkill(this);
 		}
 	}
 
-	public void delSkillReference(SkillReference skillReference) {
-		Validate.notNull(skillReference, "item cannot be null !!");
-		this.skillReferences.remove(skillReference);
-		if ( skillReference.getSkills().contains(this) ) {
-			skillReference.delSkill(this);
+	public void delResume(Resume resume) {
+		Validate.notNull(resume, "resume cannot be null !!");
+		this.resumes.remove(resume);
+		if ( resume.getSkills().contains(this) ) {
+			resume.delSkill(this);
 		}
 	}
+
 
 	
 }

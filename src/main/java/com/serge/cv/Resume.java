@@ -3,12 +3,17 @@ package com.serge.cv;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.Cascade;
+
+
 import com.serge.persistence.model.Identificable;
 
 
@@ -23,6 +28,7 @@ public class Resume implements Identificable<Integer> {
 	private Profil 	profil;
 	
 	@ManyToMany
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Set<Cursus> cursus;
 	
 	@ManyToOne
@@ -31,8 +37,8 @@ public class Resume implements Identificable<Integer> {
 	@ManyToOne
 	private Cursus projet;
 	
-	@ManyToOne
-	private SkillReference skillReference;
+	@ManyToMany
+	private Set<Skill> skills = new HashSet<Skill>();
 	
 	@ManyToOne
 	private User user;
@@ -40,15 +46,15 @@ public class Resume implements Identificable<Integer> {
 	protected Resume() { }
 
 	public Resume(final Profil profil,
-				  final SkillReference skillReference) {
+				  final Set<Skill> skills ) {
 		this.setProfil(profil);
-		this.setSkillReference(skillReference);
+		this.setSkills(skills);
 	}
 
 	Resume(ResumeBuilder resumeBuilder) {
 		this.setProfil(resumeBuilder.profil);
 		this.setCursus(resumeBuilder.cursus);
-		this.setSkillReference(resumeBuilder.skillReference);
+		this.setSkills(skills);
 	}
 
 	public Integer getId() {
@@ -94,16 +100,31 @@ public class Resume implements Identificable<Integer> {
 		this.projet = projet;
 	}
 
-	public SkillReference getSkillReference() {
-		return this.skillReference;
+	public Set<Skill> getSkills() {
+		return this.skills;
 	}
 
-	public void setSkillReference(SkillReference skillReference) {
-		this.skillReference = skillReference;
+	public void setSkills(Set<Skill> skills) {
+		this.skills = skills;
+	}
+	
+	public Resume addSkill(Skill skill) {
+		this.skills.add(skill);
+		if (!skill.getResumes().contains(this) ) {
+			skill.addResume(this);
+		}
+		return this;
+	}
+	
+
+	public Resume delSkill(Skill skill) {
+		this.skills.remove(skill);
+		if (skill.getResumes().contains(this) ) {
+			skill.delResume(this);
+		}
+		return this;
 	}
 
-	
-	
 
 	public Cursus getFormation() {
 		return this.formation;
@@ -144,7 +165,7 @@ public class Resume implements Identificable<Integer> {
 		
 		Set<Cursus> cursus = new HashSet<Cursus>();
 		
-		SkillReference skillReference;
+		Set<Skill> skills = new HashSet<Skill>();
 		
 		public ResumeBuilder setProfil(Profil profil) {
 			this.profil = profil;
@@ -156,8 +177,8 @@ public class Resume implements Identificable<Integer> {
 			return this;
 		}
 
-		public ResumeBuilder setSkillReference(SkillReference skillReference) {
-			this.skillReference = skillReference;
+		public ResumeBuilder addSkill(Skill skill) {
+			this.skills.add(skill);
 			return this;
 		}
 

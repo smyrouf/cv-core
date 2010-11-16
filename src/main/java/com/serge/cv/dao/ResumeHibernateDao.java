@@ -1,9 +1,12 @@
 package com.serge.cv.dao;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 
+import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
@@ -20,10 +23,12 @@ public class ResumeHibernateDao extends DaoStandardHibernate<Resume> implements 
 
 
 	@Transactional(readOnly=true)
-	public List<Resume> findbyName(String login) {
-		Assert.isNull(login,"Login cannot be null");
-		List<Resume> results = (List<Resume>)this.getHibernateTemplate().find("select resume from "+getEntityClass()+" as resume inner join resume.user as user where user.login = ?", new Object[]{login});
-		return results;
+	public Set<Resume> findbyName(String login) {
+		Assert.hasLength(login,"name cannot be empty");
+		Set<Resume> result = new HashSet<Resume>();
+		//result.addAll(this.getHibernateTemplate().find("select user.resume from "+User.class.getClass()+" as user where user.login = ? ", new Object[]{login}));
+		List<?> results = this.getHibernateTemplate().find("select user from "+User.class.getName()+" as user where user.login = ?", new Object[]{login});
+		return result;
 	}
 
 	
