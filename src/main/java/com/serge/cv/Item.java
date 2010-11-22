@@ -4,24 +4,19 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.springframework.core.style.ToStringCreator;
 
-import com.serge.persistence.model.Identificable;
+
 
 @Entity
 public class Item  extends TaggedEntity {
@@ -29,21 +24,19 @@ public class Item  extends TaggedEntity {
 
 	@Basic
 	@Column(nullable=false)
-	@Access(AccessType.PROPERTY)
+	
 	private Date dateDebut;
 	
 	@Basic
 	@Column(nullable=false)
-	@Access(AccessType.PROPERTY)
 	private Date dateFin;
 	
 	@Basic
-	@Access(AccessType.PROPERTY)
+	
 	private String description;
 	
 	@Basic
 	@Column(nullable=false)
-	@Access(AccessType.PROPERTY)
 	private String title;
 	
 	

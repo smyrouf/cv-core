@@ -2,8 +2,7 @@ package com.serge.cv;
 
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
+
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,11 +24,9 @@ public class Tag implements Identificable<Integer>{
 	private Integer id;
 	
 	@Basic
-	@Access(AccessType.PROPERTY)
 	private String value;
 	
 	@Basic
-	@Access(AccessType.PROPERTY)
 	private Double score;
 
 	@ManyToMany

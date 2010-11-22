@@ -3,32 +3,25 @@ package com.serge.cv;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
 import javax.persistence.OneToMany;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.springframework.core.style.ToStringCreator;
 
-import com.serge.persistence.model.Identificable;
 
 @Entity
 public class User extends TaggedEntity {
 	
 	@Basic
-	@Access(AccessType.PROPERTY)
 	@Column(unique = true, nullable = false, length=50)
 	private String login;
 	
 	@Basic
-	@Access(AccessType.PROPERTY)
 	@Column(unique = false, nullable = false, length=50)
 	private String password;
 	
